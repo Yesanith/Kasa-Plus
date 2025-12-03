@@ -1,0 +1,277 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/history_provider.dart';
+import '../l10n/app_localizations.dart';
+
+class HistoryPage extends StatelessWidget {
+  const HistoryPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final historyProvider = Provider.of<HistoryProvider>(context);
+    final localizations = AppLocalizations.of(context)!;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(localizations.history),
+        actions: [
+          if (historyProvider.records.isNotEmpty)
+            IconButton(
+              icon: const Icon(Icons.delete_sweep_rounded),
+              tooltip: localizations.clearAll,
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(localizations.clearAll),
+                    content: Text(localizations.confirmDelete),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(localizations.cancel),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          historyProvider.clearHistory();
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          localizations.confirm,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+        ],
+      ),
+      body: historyProvider.records.isEmpty
+          ? Center(
+              child: Text(
+                localizations.noHistory,
+                style: TextStyle(fontSize: 18, color: Colors.grey),
+              ),
+            )
+          : ListView.builder(
+              itemCount: historyProvider.records.length,
+              itemBuilder: (context, index) {
+                final record = historyProvider.records[index];
+                return Dismissible(
+                  key: Key(record.id),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade400,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(
+                      Icons.delete_outline_rounded,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  ),
+                  onDismissed: (direction) {
+                    historyProvider.deleteRecord(record.id);
+                  },
+                  child: Card(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      side: BorderSide(color: Theme.of(context).dividerColor),
+                    ),
+                    child: ExpansionTile(
+                      shape: const Border(), // Remove default borders
+                      tilePadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 8,
+                      ),
+                      leading: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.receipt_long_rounded,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      title: Text(
+                        record.date,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      subtitle: Text(
+                        '${record.currency} - ${record.total.toStringAsFixed(2)}',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                        ),
+                      ),
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                          child: Column(
+                            children: [
+                              if (record.initialCash > 0 ||
+                                  record.targetAmount > 0) ...[
+                                const Divider(),
+                                _buildSummaryRow(
+                                  context,
+                                  localizations.total,
+                                  record.total,
+                                  isBold: true,
+                                ),
+                                if (record.initialCash > 0)
+                                  _buildSummaryRow(
+                                    context,
+                                    localizations.initialCash,
+                                    record.initialCash,
+                                    isPositive: true,
+                                  ),
+                                if (record.initialCash > 0)
+                                  _buildSummaryRow(
+                                    context,
+                                    localizations.netTotal,
+                                    record.total + record.initialCash,
+                                    isBold: true,
+                                  ),
+                                if (record.targetAmount > 0)
+                                  _buildSummaryRow(
+                                    context,
+                                    localizations.targetAmount,
+                                    record.targetAmount,
+                                    color: Colors.blue,
+                                  ),
+                                if (record.targetAmount > 0)
+                                  _buildSummaryRow(
+                                    context,
+                                    localizations.difference,
+                                    (record.total + record.initialCash) -
+                                        record.targetAmount,
+                                    isBold: true,
+                                    color:
+                                        ((record.total + record.initialCash) -
+                                                record.targetAmount) >=
+                                            0
+                                        ? Colors.green
+                                        : Colors.red,
+                                  ),
+                              ],
+                              const Divider(),
+                              ...record.items.entries.map((entry) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 4,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '${entry.key} x ${entry.value.toStringAsFixed(0)}',
+                                        style: TextStyle(
+                                          color: Theme.of(
+                                            context,
+                                          ).textTheme.bodyMedium?.color,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Text(
+                                        (double.parse(entry.key) * entry.value)
+                                            .toStringAsFixed(2),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                              const SizedBox(height: 12),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton.icon(
+                                  onPressed: () =>
+                                      historyProvider.deleteRecord(record.id),
+                                  icon: const Icon(
+                                    Icons.delete_outline_rounded,
+                                    size: 18,
+                                  ),
+                                  label: Text(localizations.delete),
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Colors.red.shade400,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+    );
+  }
+
+  Widget _buildSummaryRow(
+    BuildContext context,
+    String label,
+    double value, {
+    bool isBold = false,
+    bool isPositive = false,
+    bool isNegative = false,
+    Color? color,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyMedium?.color,
+              fontSize: 14,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+          Text(
+            value.toStringAsFixed(2),
+            style: TextStyle(
+              fontWeight: isBold ? FontWeight.bold : FontWeight.w600,
+              fontSize: 14,
+              color:
+                  color ??
+                  (isPositive
+                      ? Colors.green
+                      : isNegative
+                      ? Colors.red
+                      : Theme.of(context).textTheme.bodyLarge?.color),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
