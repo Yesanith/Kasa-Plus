@@ -1,9 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/history_provider.dart';
-import '../providers/settings_provider.dart';
-import '../l10n/app_localizations.dart';
+import 'package:money_calc_app/providers/history_provider.dart';
+import 'package:money_calc_app/providers/settings_provider.dart';
+import 'package:money_calc_app/l10n/app_localizations.dart';
 
 class StatisticsPage extends StatelessWidget {
   const StatisticsPage({super.key});
@@ -109,7 +109,6 @@ class StatisticsPage extends StatelessWidget {
               child: LineChart(
                 LineChartData(
                   gridData: FlGridData(
-                    show: true,
                     drawVerticalLine: false,
                     horizontalInterval: (maxY - minY) / 5 == 0
                         ? 1
@@ -122,16 +121,10 @@ class StatisticsPage extends StatelessWidget {
                     },
                   ),
                   titlesData: FlTitlesData(
-                    show: true,
-                    rightTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    topTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    bottomTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ), // Hide dates for cleaner look or implement simple index
+                    rightTitles: const AxisTitles(),
+                    topTitles: const AxisTitles(),
+                    bottomTitles:
+                        const AxisTitles(), // Hide dates for cleaner look or implement simple index
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
@@ -167,7 +160,6 @@ class StatisticsPage extends StatelessWidget {
                       barWidth: 3,
                       isStrokeCapRound: true,
                       dotData: FlDotData(
-                        show: true,
                         getDotPainter: (spot, percent, barData, index) {
                           return FlDotCirclePainter(
                             radius: 4,
@@ -284,23 +276,13 @@ class StatisticsPage extends StatelessWidget {
                       },
                     ),
                   ),
-                  titlesData: FlTitlesData(
-                    show: true,
-                    bottomTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    leftTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    topTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    rightTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
+                  titlesData: const FlTitlesData(
+                    bottomTitles: AxisTitles(),
+                    leftTitles: AxisTitles(),
+                    topTitles: AxisTitles(),
+                    rightTitles: AxisTitles(),
                   ),
                   gridData: FlGridData(
-                    show: true,
                     drawVerticalLine: false,
                     horizontalInterval: (maxY - minY) / 5 == 0
                         ? 1

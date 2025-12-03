@@ -1,1 +1,21 @@
 include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    avoid_print: true
+    always_use_package_imports: true
+    prefer_final_locals: true
+    unnecessary_this: true
+    sort_pub_dependencies: true
+    avoid_unused_constructor_parameters: true
+    avoid_redundant_argument_values: true
+    prefer_single_quotes: true
+    require_trailing_commas: true
+    use_super_parameters: true
+    use_colored_box: true
+    use_decorated_box: true
+    use_named_constants: true
+    use_string_buffers: true
+    use_to_and_as_if_applicable: true

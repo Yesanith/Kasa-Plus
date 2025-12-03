@@ -67,6 +67,19 @@ class SafeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void removeItems(String currency, Map<String, int> items) {
+    if (!_inventory.containsKey(currency)) {
+      return;
+    }
+    items.forEach((denom, count) {
+      final current = _inventory[currency]![denom] ?? 0;
+      final newCount = current - count;
+      _inventory[currency]![denom] = newCount < 0 ? 0 : newCount;
+    });
+    _saveInventory();
+    notifyListeners();
+  }
+
   void clearCurrencyInventory(String currency) {
     if (_inventory.containsKey(currency)) {
       _inventory[currency]!.clear();

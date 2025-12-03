@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/settings_provider.dart';
-import '../l10n/app_localizations.dart';
+import 'package:money_calc_app/providers/settings_provider.dart';
+import 'package:money_calc_app/l10n/app_localizations.dart';
 
 class OptionsPage extends StatelessWidget {
   const OptionsPage({super.key});

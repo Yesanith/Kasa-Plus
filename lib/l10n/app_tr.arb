@@ -44,5 +44,12 @@
   "safeEmptyTitle": "Kasa Durumu Belirsiz",
   "safeEmptyMessage": "Kasanızda para görünmüyor. Başlamak için lütfen kasadaki mevcut tutarı girin.",
   "later": "Daha Sonra",
-  "goToSafe": "Kasaya Git"
+  "goToSafe": "Kasaya Git",
+  "bankDeposit": "Bankaya Yatırılan",
+  "deposit": "Yatır",
+  "deposited": "Yatırıldı",
+  "cannotDeleteDeposit": "Banka yatırma işlemleri silinemez",
+  "insufficientFunds": "Kasada yeterli bakiye yok",
+  "confirmDeposit": "Yatırmayı Onayla",
+  "confirmDepositContent": "Bu tutarı bankaya yatırmak istediğinize emin misiniz? Bu işlem kasadan düşülecektir."
 }

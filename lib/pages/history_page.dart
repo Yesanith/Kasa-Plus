@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/history_provider.dart';
-import '../l10n/app_localizations.dart';
+import 'package:money_calc_app/providers/history_provider.dart';
+import 'package:money_calc_app/l10n/app_localizations.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
@@ -49,18 +49,39 @@ class HistoryPage extends StatelessWidget {
       ),
       body: historyProvider.records.isEmpty
           ? Center(
-              child: Text(
-                localizations.noHistory,
-                style: TextStyle(fontSize: 18, color: Colors.grey),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.history, size: 64, color: Colors.grey.shade400),
+                  const SizedBox(height: 16),
+                  Text(
+                    localizations.noHistory,
+                    style: const TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                ],
               ),
             )
           : ListView.builder(
               itemCount: historyProvider.records.length,
               itemBuilder: (context, index) {
                 final record = historyProvider.records[index];
+                final isDeposit = record.type == 'deposit';
+
                 return Dismissible(
                   key: Key(record.id),
                   direction: DismissDirection.endToStart,
+                  confirmDismiss: (direction) async {
+                    if (isDeposit) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(localizations.cannotDeleteDeposit),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                      return false;
+                    }
+                    return true;
+                  },
                   background: Container(
                     margin: const EdgeInsets.symmetric(
                       horizontal: 16,
@@ -100,27 +121,63 @@ class HistoryPage extends StatelessWidget {
                       leading: Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.1),
+                          color: isDeposit
+                              ? Colors.orange.withValues(alpha: 0.1)
+                              : Theme.of(
+                                  context,
+                                ).colorScheme.primary.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
-                          Icons.receipt_long_rounded,
-                          color: Theme.of(context).colorScheme.primary,
+                          isDeposit
+                              ? Icons.account_balance_rounded
+                              : Icons.receipt_long_rounded,
+                          color: isDeposit
+                              ? Colors.orange
+                              : Theme.of(context).colorScheme.primary,
                         ),
                       ),
-                      title: Text(
-                        record.date,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
+                      title: Row(
+                        children: [
+                          Text(
+                            record.date,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          if (isDeposit) ...[
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.orange.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(4),
+                                border: Border.all(
+                                  color: Colors.orange.withValues(alpha: 0.5),
+                                ),
+                              ),
+                              child: Text(
+                                localizations.bankDeposit,
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                       subtitle: Text(
                         '${record.currency} - ${record.total.toStringAsFixed(2)}',
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
+                          color: isDeposit
+                              ? Colors.orange
+                              : Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.w700,
                           fontSize: 14,
                         ),
@@ -207,21 +264,22 @@ class HistoryPage extends StatelessWidget {
                                 );
                               }),
                               const SizedBox(height: 12),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: TextButton.icon(
-                                  onPressed: () =>
-                                      historyProvider.deleteRecord(record.id),
-                                  icon: const Icon(
-                                    Icons.delete_outline_rounded,
-                                    size: 18,
-                                  ),
-                                  label: Text(localizations.delete),
-                                  style: TextButton.styleFrom(
-                                    foregroundColor: Colors.red.shade400,
+                              if (!isDeposit)
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: TextButton.icon(
+                                    onPressed: () =>
+                                        historyProvider.deleteRecord(record.id),
+                                    icon: const Icon(
+                                      Icons.delete_outline_rounded,
+                                      size: 18,
+                                    ),
+                                    label: Text(localizations.delete),
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: Colors.red.shade400,
+                                    ),
                                   ),
                                 ),
-                              ),
                             ],
                           ),
                         ),

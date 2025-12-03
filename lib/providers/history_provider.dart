@@ -9,8 +9,8 @@ class HistoryRecord {
   final double total;
   final double initialCash;
   final double targetAmount;
-  final Map<String, double>
-  items; // Denomination as String to avoid JSON key issues
+  final Map<String, double> items;
+  final String type; // 'count' or 'deposit'
 
   HistoryRecord({
     required this.id,
@@ -20,6 +20,7 @@ class HistoryRecord {
     this.initialCash = 0.0,
     this.targetAmount = 0.0,
     required this.items,
+    this.type = 'count',
   });
 
   Map<String, dynamic> toJson() {
@@ -31,6 +32,7 @@ class HistoryRecord {
       'initialCash': initialCash,
       'targetAmount': targetAmount,
       'items': items,
+      'type': type,
     };
   }
 
@@ -43,6 +45,7 @@ class HistoryRecord {
       initialCash: (json['initialCash'] as num?)?.toDouble() ?? 0.0,
       targetAmount: (json['targetAmount'] as num?)?.toDouble() ?? 0.0,
       items: Map<String, double>.from(json['items']),
+      type: json['type'] ?? 'count',
     );
   }
 }
@@ -71,6 +74,7 @@ class HistoryProvider with ChangeNotifier {
     double initialCash = 0.0,
     double targetAmount = 0.0,
     required Map<double, double> items, // Denom -> Quantity
+    String type = 'count',
   }) async {
     final now = DateTime.now();
     // Format: dd.MM.yyyy HH:mm
@@ -95,6 +99,7 @@ class HistoryProvider with ChangeNotifier {
       initialCash: initialCash,
       targetAmount: targetAmount,
       items: stringItems,
+      type: type,
     );
 
     _records.insert(0, newRecord); // Add to top
@@ -103,9 +108,16 @@ class HistoryProvider with ChangeNotifier {
   }
 
   Future<void> deleteRecord(String id) async {
-    _records.removeWhere((r) => r.id == id);
-    notifyListeners();
-    await _saveToPrefs();
+    final index = _records.indexWhere((r) => r.id == id);
+    if (index != -1) {
+      if (_records[index].type == 'deposit') {
+        // Cannot delete deposit records
+        return;
+      }
+      _records.removeAt(index);
+      notifyListeners();
+      await _saveToPrefs();
+    }
   }
 
   Future<void> clearHistory() async {

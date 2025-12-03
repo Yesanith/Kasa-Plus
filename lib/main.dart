@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'l10n/app_localizations.dart';
-import 'providers/settings_provider.dart';
-import 'providers/history_provider.dart';
-import 'providers/safe_provider.dart';
-import 'pages/home_page.dart';
+import 'package:money_calc_app/l10n/app_localizations.dart';
+import 'package:money_calc_app/providers/settings_provider.dart';
+import 'package:money_calc_app/providers/history_provider.dart';
+import 'package:money_calc_app/providers/safe_provider.dart';
+import 'package:money_calc_app/pages/home_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,6 @@ class MainApp extends StatelessWidget {
         builder: (context, settings, child) {
           return MaterialApp(
             title: 'Money Counter',
-            themeMode: ThemeMode.system,
             darkTheme: ThemeData(
               useMaterial3: true,
               fontFamily: 'Roboto',

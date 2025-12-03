@@ -93,8 +93,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addToSafe => 'Add to Safe?';
 
   @override
-  String get addToSafeContent =>
-      'Do you want to add these items to the safe inventory?';
+  String get addToSafeContent => 'Do you want to add these items to the safe inventory?';
 
   @override
   String get addedToSafe => 'Added to Safe';
@@ -103,8 +102,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetSafe => 'Reset Safe';
 
   @override
-  String get confirmResetSafe =>
-      'Are you sure you want to reset the safe for this currency?';
+  String get confirmResetSafe => 'Are you sure you want to reset the safe for this currency?';
 
   @override
   String get safeDropTitle => 'Safe Drop Calculation';
@@ -142,12 +140,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get safeEmptyTitle => 'Safe Status Unknown';
 
   @override
-  String get safeEmptyMessage =>
-      'Your safe appears to be empty. Please enter the current amount in your safe to start.';
+  String get safeEmptyMessage => 'Your safe appears to be empty. Please enter the current amount in your safe to start.';
 
   @override
   String get later => 'Later';
 
   @override
   String get goToSafe => 'Go to Safe';
+
+  @override
+  String get bankDeposit => 'Bank Deposit';
+
+  @override
+  String get deposit => 'Deposit';
+
+  @override
+  String get deposited => 'Deposited';
+
+  @override
+  String get cannotDeleteDeposit => 'Bank deposits cannot be deleted';
+
+  @override
+  String get insufficientFunds => 'Insufficient funds in safe';
+
+  @override
+  String get confirmDeposit => 'Confirm Deposit';
+
+  @override
+  String get confirmDepositContent => 'Are you sure you want to deposit this amount to the bank? This will be deducted from the safe.';
 }

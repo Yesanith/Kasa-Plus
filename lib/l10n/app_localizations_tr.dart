@@ -102,8 +102,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get resetSafe => 'Kasayı Sıfırla';
 
   @override
-  String get confirmResetSafe =>
-      'Bu para birimi için kasayı sıfırlamak istediğinize emin misiniz?';
+  String get confirmResetSafe => 'Bu para birimi için kasayı sıfırlamak istediğinize emin misiniz?';
 
   @override
   String get safeDropTitle => 'Kasa Devir Hesabı';
@@ -141,12 +140,32 @@ class AppLocalizationsTr extends AppLocalizations {
   String get safeEmptyTitle => 'Kasa Durumu Belirsiz';
 
   @override
-  String get safeEmptyMessage =>
-      'Kasanızda para görünmüyor. Başlamak için lütfen kasadaki mevcut tutarı girin.';
+  String get safeEmptyMessage => 'Kasanızda para görünmüyor. Başlamak için lütfen kasadaki mevcut tutarı girin.';
 
   @override
   String get later => 'Daha Sonra';
 
   @override
   String get goToSafe => 'Kasaya Git';
+
+  @override
+  String get bankDeposit => 'Bankaya Yatırılan';
+
+  @override
+  String get deposit => 'Yatır';
+
+  @override
+  String get deposited => 'Yatırıldı';
+
+  @override
+  String get cannotDeleteDeposit => 'Banka yatırma işlemleri silinemez';
+
+  @override
+  String get insufficientFunds => 'Kasada yeterli bakiye yok';
+
+  @override
+  String get confirmDeposit => 'Yatırmayı Onayla';
+
+  @override
+  String get confirmDepositContent => 'Bu tutarı bankaya yatırmak istediğinize emin misiniz? Bu işlem kasadan düşülecektir.';
 }

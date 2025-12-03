@@ -44,5 +44,12 @@
   "safeEmptyTitle": "Safe Status Unknown",
   "safeEmptyMessage": "Your safe appears to be empty. Please enter the current amount in your safe to start.",
   "later": "Later",
-  "goToSafe": "Go to Safe"
+  "goToSafe": "Go to Safe",
+  "bankDeposit": "Bank Deposit",
+  "deposit": "Deposit",
+  "deposited": "Deposited",
+  "cannotDeleteDeposit": "Bank deposits cannot be deleted",
+  "insufficientFunds": "Insufficient funds in safe",
+  "confirmDeposit": "Confirm Deposit",
+  "confirmDepositContent": "Are you sure you want to deposit this amount to the bank? This will be deducted from the safe."
 }

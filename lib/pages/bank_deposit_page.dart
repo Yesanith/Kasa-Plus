@@ -2,34 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:money_calc_app/providers/settings_provider.dart';
-import 'package:money_calc_app/providers/history_provider.dart';
 import 'package:money_calc_app/providers/safe_provider.dart';
+import 'package:money_calc_app/providers/history_provider.dart';
 import 'package:money_calc_app/l10n/app_localizations.dart';
 import 'package:money_calc_app/widgets/app_drawer.dart';
 import 'package:money_calc_app/widgets/denomination_list.dart';
-import 'package:money_calc_app/widgets/initial_cash_dialog.dart';
-import 'package:money_calc_app/widgets/reconciliation_section.dart';
 import 'package:money_calc_app/widgets/total_display.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class BankDepositPage extends StatefulWidget {
+  const BankDepositPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<BankDepositPage> createState() => _BankDepositPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _BankDepositPageState extends State<BankDepositPage> {
   double _total = 0.0;
-  double _initialCash = 0.0;
-  double _targetAmount = 0.0;
-
-  // Store controllers for each denomination to persist input
   final Map<double, TextEditingController> _controllers = {};
-  // Store initial cash counts
-  final Map<double, int> _initialCashCounts = {};
-
-  final TextEditingController _targetAmountController = TextEditingController();
-  final TextEditingController _initialCashController = TextEditingController();
   String? _currentCurrency;
 
   // Define denominations for supported currencies
@@ -73,20 +62,15 @@ class _HomePageState extends State<HomePage> {
     for (var controller in _controllers.values) {
       controller.dispose();
     }
-    _targetAmountController.dispose();
-    _initialCashController.dispose();
     super.dispose();
   }
 
   void _updateControllers(String currency) {
-    // Clear old controllers
     for (var controller in _controllers.values) {
       controller.dispose();
     }
     _controllers.clear();
-    _initialCashCounts.clear();
 
-    // Initialize new controllers
     final denoms = _getDenominations(currency);
     for (var denom in denoms) {
       _controllers[denom] = TextEditingController();
@@ -94,30 +78,6 @@ class _HomePageState extends State<HomePage> {
 
     _currentCurrency = currency;
     _total = 0.0;
-    _initialCash = 0.0;
-    _initialCashController.clear();
-  }
-
-  String _formatCurrency(double value, String currency, Locale locale) {
-    String symbol;
-    switch (currency) {
-      case 'USD':
-        symbol = '\$';
-        break;
-      case 'EUR':
-        symbol = '€';
-        break;
-      case 'TRY':
-        symbol = '₺';
-        break;
-      default:
-        symbol = '';
-    }
-    final format = NumberFormat.currency(
-      locale: locale.languageCode,
-      symbol: symbol,
-    );
-    return format.format(value);
   }
 
   void _calculateTotal() {
@@ -127,27 +87,8 @@ class _HomePageState extends State<HomePage> {
       newTotal += denom * quantity;
     });
 
-    double initialTotal = 0.0;
-    _initialCashCounts.forEach((denom, count) {
-      initialTotal += denom * count;
-    });
-
-    final target = double.tryParse(_targetAmountController.text) ?? 0.0;
-
     setState(() {
       _total = newTotal;
-      _initialCash = initialTotal;
-      _targetAmount = target;
-      if (initialTotal > 0) {
-        final settings = Provider.of<SettingsProvider>(context, listen: false);
-        _initialCashController.text = _formatCurrency(
-          initialTotal,
-          settings.currency,
-          settings.locale,
-        );
-      } else {
-        _initialCashController.text = '';
-      }
     });
   }
 
@@ -155,185 +96,107 @@ class _HomePageState extends State<HomePage> {
     _controllers.forEach((_, controller) {
       controller.clear();
     });
-    _initialCashCounts.clear();
-    _targetAmountController.clear();
-    _initialCashController.clear();
     setState(() {
       _total = 0.0;
-      _initialCash = 0.0;
-      _targetAmount = 0.0;
     });
   }
 
-  Future<void> _showInitialCashDialog() async {
+  Future<void> _handleDeposit() async {
     final settings = Provider.of<SettingsProvider>(context, listen: false);
-    final denoms = _getDenominations(settings.currency);
-
-    final result = await showDialog<Map<double, int>>(
-      context: context,
-      builder: (context) => InitialCashDialog(
-        initialCounts: _initialCashCounts,
-        currency: settings.currency,
-        denominations: denoms,
-      ),
+    final safeProvider = Provider.of<SafeProvider>(context, listen: false);
+    final historyProvider = Provider.of<HistoryProvider>(
+      context,
+      listen: false,
     );
-
-    if (result != null) {
-      setState(() {
-        _initialCashCounts.clear();
-        _initialCashCounts.addAll(result);
-      });
-      _calculateTotal();
-    }
-  }
-
-  void _saveRecord() {
-    final settings = Provider.of<SettingsProvider>(context, listen: false);
-    final history = Provider.of<HistoryProvider>(context, listen: false);
     final localizations = AppLocalizations.of(context)!;
 
     if (_total <= 0) return;
 
-    final Map<double, double> items = {};
+    // Prepare items
+    final Map<String, int> depositItems = {};
+    final Map<double, double> historyItems = {};
+    bool hasInsufficientFunds = false;
+
     _controllers.forEach((denom, controller) {
       final qty = double.tryParse(controller.text) ?? 0.0;
       if (qty > 0) {
-        items[denom] = qty;
+        final intQty = qty.toInt();
+        final currentSafeCount = safeProvider.getCount(
+          settings.currency,
+          denom.toString(),
+        );
+
+        if (intQty > currentSafeCount) {
+          hasInsufficientFunds = true;
+        }
+
+        depositItems[denom.toString()] = intQty;
+        historyItems[denom] = qty;
       }
     });
 
-    history.saveRecord(
-      currency: settings.currency,
-      total: _total,
-      initialCash: _initialCash,
-      targetAmount: _targetAmount,
-      items: items,
-    );
-
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(localizations.saved)));
-
-    // Calculate items to add to safe (Total Count - Initial Cash Count)
-    final Map<String, int> safeItems = {};
-    double actualAddedAmount = 0.0;
-
-    // We iterate through all denominations that have either count or initial cash
-    final allDenoms = {...items.keys, ..._initialCashCounts.keys}.toList();
-
-    for (final denom in allDenoms) {
-      final totalCount = items[denom]?.toInt() ?? 0;
-      final initialCount = _initialCashCounts[denom] ?? 0;
-      final netCount = totalCount - initialCount;
-
-      if (netCount != 0) {
-        safeItems[denom.toString()] = netCount;
-        actualAddedAmount += netCount * denom;
-      }
+    if (hasInsufficientFunds) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(localizations.insufficientFunds),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
     }
 
-    // Ask to add to safe
-    showDialog(
+    // Confirm Dialog
+    final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(localizations.safeDropTitle),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildDialogRow(
-              localizations.totalCounted,
-              _total,
-              settings.currency,
-            ),
-            const SizedBox(height: 8),
-            _buildDialogRow(
-              localizations.deductedInitial,
-              _initialCash,
-              settings.currency,
-              color: Colors.red.shade700,
-            ),
-            const Divider(height: 24),
-            _buildDialogRow(
-              localizations.toBeAdded,
-              actualAddedAmount,
-              settings.currency,
-              isBold: true,
-              color: actualAddedAmount >= 0
-                  ? Colors.green.shade700
-                  : Colors.red.shade700,
-            ),
-          ],
-        ),
+        title: Text(localizations.confirmDeposit),
+        content: Text(localizations.confirmDepositContent),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(context, false),
             child: Text(localizations.cancel),
           ),
           TextButton(
-            onPressed: () {
-              Provider.of<SafeProvider>(
-                context,
-                listen: false,
-              ).addItems(settings.currency, safeItems);
-
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(localizations.addedToSafe)),
-              );
-            },
+            onPressed: () => Navigator.pop(context, true),
             child: Text(localizations.confirm),
           ),
         ],
       ),
     );
-  }
 
-  Widget _buildDialogRow(
-    String label,
-    double value,
-    String currency, {
-    bool isBold = false,
-    Color? color,
-  }) {
-    final settings = Provider.of<SettingsProvider>(context, listen: false);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-            color: Colors.black87,
-          ),
-        ),
-        Text(
-          _formatCurrency(value, currency, settings.locale),
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: color ?? Colors.black87,
-          ),
-        ),
-      ],
-    );
+    if (confirmed == true) {
+      // Deduct from Safe
+      safeProvider.removeItems(settings.currency, depositItems);
+
+      // Save to History
+      await historyProvider.saveRecord(
+        currency: settings.currency,
+        total: _total,
+        items: historyItems,
+        type: 'deposit',
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(localizations.deposited)));
+        _resetTotal();
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<SettingsProvider>(context);
     final localizations = AppLocalizations.of(context)!;
-
     final denominations = _getDenominations(settings.currency);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(localizations.appTitle),
-        // Removed actions, now using Drawer
-      ),
+      appBar: AppBar(title: Text(localizations.bankDeposit)),
       drawer: const AppDrawer(),
       body: Column(
         children: [
-          // Fixed Top Section
+          // Top Section
           Container(
             width: double.infinity,
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
@@ -351,17 +214,10 @@ class _HomePageState extends State<HomePage> {
               children: [
                 TotalDisplay(
                   total: _total,
-                  initialCash: _initialCash,
-                  targetAmount: _targetAmount,
+                  initialCash: 0,
+                  targetAmount: 0,
                   currency: settings.currency,
                   locale: settings.locale,
-                ),
-                const SizedBox(height: 16),
-                ReconciliationSection(
-                  initialCashController: _initialCashController,
-                  targetAmountController: _targetAmountController,
-                  onInitialCashTap: _showInitialCashDialog,
-                  onTargetAmountChanged: (_) => _calculateTotal(),
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -413,15 +269,18 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Row(
                       children: [
-                        // Save Button
+                        // Deposit Button
                         FilledButton.icon(
-                          onPressed: _saveRecord,
-                          icon: const Icon(Icons.save_rounded, size: 18),
-                          label: Text(localizations.save),
+                          onPressed: _handleDeposit,
+                          icon: const Icon(
+                            Icons.account_balance_rounded,
+                            size: 18,
+                          ),
+                          label: Text(localizations.deposit),
                           style: FilledButton.styleFrom(
-                            backgroundColor: Theme.of(
-                              context,
-                            ).colorScheme.primary,
+                            backgroundColor: Theme.of(context)
+                                .colorScheme
+                                .secondary, // Use secondary color for deposit
                             foregroundColor: Colors.white,
                           ),
                         ),
