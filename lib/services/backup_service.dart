@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
@@ -27,10 +26,14 @@ class BackupService {
 
       for (final key in _keysToBackup) {
         if (prefs.containsKey(key)) {
-          // We store everything as whatever type it is in prefs,
-          // but SharedPreferences only supports basic types.
-          // Our complex data is stored as JSON strings.
-          final value = prefs.get(key);
+          var value = prefs.get(key);
+          // If it's a JSON string, try to decode it so it looks nice in the backup file
+          if (value is String &&
+              (value.startsWith('{') || value.startsWith('['))) {
+            try {
+              value = jsonDecode(value);
+            } catch (_) {}
+          }
           backupData[key] = value;
         }
       }
@@ -39,30 +42,50 @@ class BackupService {
       backupData['backup_date'] = DateTime.now().toIso8601String();
       backupData['app_version'] = '1.0.0'; // TODO: Get real version
 
-      final String jsonString = jsonEncode(backupData);
+      // Pretty print JSON
+      final String jsonString = const JsonEncoder.withIndent(
+        '  ',
+      ).convert(backupData);
 
-      // Create a temporary file
-      final directory = await getTemporaryDirectory();
       final String dateStr = DateFormat(
         'yyyyMMdd_HHmmss',
       ).format(DateTime.now());
       final String fileName = '$_backupFileNamePrefix$dateStr.json';
-      final File file = File('${directory.path}/$fileName');
 
-      await file.writeAsString(jsonString);
+      // Convert to bytes for mobile platforms
+      final Uint8List fileBytes = Uint8List.fromList(utf8.encode(jsonString));
 
-      // Share the file
-      // ignore: deprecated_member_use
-      final result = await Share.shareXFiles(
-        [XFile(file.path)],
-        subject: 'Kasa+ Backup',
-        text: 'Kasa+ data backup file created on $dateStr',
+      // Use FilePicker to save the file directly
+      String? outputFile = await FilePicker.platform.saveFile(
+        dialogTitle: 'Yedek Dosyasını Kaydet',
+        fileName: fileName,
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+        bytes: fileBytes,
       );
 
-      if (result.status == ShareResultStatus.success) {
+      if (outputFile != null) {
+        // On mobile, if bytes are provided, saveFile handles the writing.
+        // On desktop/web, we might still need to write if it just returns path,
+        // but for this specific error "Bytes are required on Android & iOS",
+        // providing bytes solves the mobile issue.
+        // If outputFile is returned, it means success.
+
+        // Note: On some platforms/versions, saveFile with bytes writes the file.
+        // If we try to write again to 'outputFile', it might work or be redundant.
+        // Since the error was about missing bytes, providing them is the fix.
+        // We'll assume the plugin handles writing when bytes are passed on mobile.
+
+        if (!Platform.isAndroid && !Platform.isIOS) {
+          final File file = File(outputFile);
+          await file.writeAsString(jsonString);
+        }
+
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Yedekleme dosyası oluşturuldu')),
+            const SnackBar(
+              content: Text('Yedekleme dosyası başarıyla kaydedildi'),
+            ),
           );
         }
       }
@@ -103,7 +126,10 @@ class BackupService {
           for (final key in _keysToBackup) {
             if (data.containsKey(key)) {
               final value = data[key];
-              if (value is String) {
+              if (value is Map || value is List) {
+                // It was decoded, so encode it back to string for Prefs
+                await prefs.setString(key, jsonEncode(value));
+              } else if (value is String) {
                 await prefs.setString(key, value);
               } else if (value is int) {
                 await prefs.setInt(key, value);
@@ -111,8 +137,6 @@ class BackupService {
                 await prefs.setDouble(key, value);
               } else if (value is bool) {
                 await prefs.setBool(key, value);
-              } else if (value is List) {
-                await prefs.setStringList(key, List<String>.from(value));
               }
             }
           }

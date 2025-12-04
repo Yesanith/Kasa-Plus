@@ -39,6 +39,7 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _targetAmountController = TextEditingController();
   final TextEditingController _initialCashController = TextEditingController();
   String? _currentCurrency;
+  bool _tutorialTriggered = false;
 
   // Define denominations for supported currencies
   static const Map<String, List<double>> _currencyDenominations = {
@@ -52,16 +53,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkTutorial();
-    });
-  }
-
-  void _checkTutorial() {
-    final settings = Provider.of<SettingsProvider>(context, listen: false);
-    if (!settings.tutorialShown) {
-      _showTutorial(context);
-    }
   }
 
   void _showTutorial(BuildContext context) {
@@ -230,6 +221,13 @@ class _HomePageState extends State<HomePage> {
     final settings = Provider.of<SettingsProvider>(context);
     if (_currentCurrency != settings.currency) {
       _updateControllers(settings.currency);
+    }
+
+    if (!settings.isLoading && !settings.tutorialShown && !_tutorialTriggered) {
+      _tutorialTriggered = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showTutorial(context);
+      });
     }
   }
 

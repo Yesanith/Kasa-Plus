@@ -13,6 +13,7 @@
 *   **🏦 Banka Yatırma:** Bankaya yatırılan tutarları kaydedin ve kasanızdan otomatik olarak düşülmesini sağlayın.
 *   **📊 İstatistikler:** Net toplam ve fark grafiklerinizi görsel olarak analiz edin.
 *   **💾 Yedekleme ve Geri Yükleme:** Verilerinizi kaybetmemek için yedekleyin ve dilediğiniz zaman geri yükleyin.
+*   **🎓 İnteraktif Rehber:** Uygulamayı ilk kez açtığınızda sizi karşılayan adım adım kullanım rehberi.
 *   **🌙 Karanlık Mod:** Göz yormayan şık karanlık tema.
 
 ## 🚀 Kurulum
@@ -41,7 +42,7 @@ Alternatif olarak, kaynak koddan derlemek isterseniz:
 ## 📖 Kullanım Kılavuzu
 
 ### 0. İlk Başlangıç (Uygulamayı İlk Açış)
-Uygulamayı ilk kez çalıştırdığınızda kasanız boş olarak gelir.
+Uygulamayı ilk kez çalıştırdığınızda sizi **İnteraktif Rehber** karşılayacaktır. Bu rehber, uygulamanın temel özelliklerini hızlıca öğrenmenizi sağlar.
 1.  **Başlangıç Bakiyesi:** Eğer kasanızda devreden bir bakiye varsa, sol menüden **Kasa** sayfasına giderek elinizdeki banknot ve madeni paraları ilgili kutucuklara girebilirsiniz. Bu işlem kasanızın açılış bakiyesini oluşturur.
 2.  **Günlük Kullanım:** Artık **Ana Sayfa** üzerinden günlük sayımlarınızı yapmaya başlayabilirsiniz.
 
@@ -69,8 +70,8 @@ Sol menüden "Bankaya Yatır" seçeneği ile kasadan bankaya para çıkışı ya
 ### 5. Yedekleme ve Geri Yükleme
 Verilerinizi güvende tutmak veya başka bir cihaza taşımak için:
 1.  Sol menüden **Seçenekler** sayfasına gidin.
-2.  **Verileri Yedekle** butonuna basın ve oluşturulan dosyayı (Google Drive, E-posta vb. ile) saklayın.
-3.  Verileri geri getirmek için **Verileri Geri Yükle** butonuna basın ve daha önce aldığınız yedek dosyasını seçin.
+2.  **Verileri Yedekle** butonuna basın. Açılan dosya kaydetme penceresinde dosyanın kaydedileceği konumu (İndirilenler vb.) seçin ve kaydedin.
+3.  Verileri geri getirmek için **Verileri Geri Yükle** butonuna basın ve daha önce kaydettiğiniz `.json` uzantılı yedek dosyasını seçin.
 
 ## 🛠️ Kullanılan Teknolojiler
 
