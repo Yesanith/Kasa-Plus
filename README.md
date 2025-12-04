@@ -79,8 +79,3 @@ Verilerinizi güvende tutmak veya başka bir cihaza taşımak için:
 *   **[Provider](https://pub.dev/packages/provider)** - Durum Yönetimi (State Management)
 *   **[Shared Preferences](https://pub.dev/packages/shared_preferences)** - Veri Saklama
 *   **[FL Chart](https://pub.dev/packages/fl_chart)** - Grafikler
-
-## 📄 Lisans
-
-Bu proje MIT Lisansı ile lisanslanmıştır.
-
