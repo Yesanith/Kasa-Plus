@@ -110,10 +110,6 @@ class HistoryProvider with ChangeNotifier {
   Future<void> deleteRecord(String id) async {
     final index = _records.indexWhere((r) => r.id == id);
     if (index != -1) {
-      if (_records[index].type == 'deposit') {
-        // Cannot delete deposit records
-        return;
-      }
       _records.removeAt(index);
       notifyListeners();
       await _saveToPrefs();
@@ -130,5 +126,9 @@ class HistoryProvider with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final String encoded = jsonEncode(_records.map((e) => e.toJson()).toList());
     await prefs.setString('history_records', encoded);
+  }
+
+  Future<void> reload() async {
+    await _loadRecords();
   }
 }

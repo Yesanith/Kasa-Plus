@@ -102,7 +102,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get resetSafe => 'Kasayı Sıfırla';
 
   @override
-  String get confirmResetSafe => 'Bu para birimi için kasayı sıfırlamak istediğinize emin misiniz?';
+  String get confirmResetSafe =>
+      'Bu para birimi için kasayı sıfırlamak istediğinize emin misiniz?';
 
   @override
   String get safeDropTitle => 'Kasa Devir Hesabı';
@@ -140,7 +141,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get safeEmptyTitle => 'Kasa Durumu Belirsiz';
 
   @override
-  String get safeEmptyMessage => 'Kasanızda para görünmüyor. Başlamak için lütfen kasadaki mevcut tutarı girin.';
+  String get safeEmptyMessage =>
+      'Kasanızda para görünmüyor. Başlamak için lütfen kasadaki mevcut tutarı girin.';
 
   @override
   String get later => 'Daha Sonra';
@@ -158,14 +160,72 @@ class AppLocalizationsTr extends AppLocalizations {
   String get deposited => 'Yatırıldı';
 
   @override
-  String get cannotDeleteDeposit => 'Banka yatırma işlemleri silinemez';
-
-  @override
   String get insufficientFunds => 'Kasada yeterli bakiye yok';
 
   @override
   String get confirmDeposit => 'Yatırmayı Onayla';
 
   @override
-  String get confirmDepositContent => 'Bu tutarı bankaya yatırmak istediğinize emin misiniz? Bu işlem kasadan düşülecektir.';
+  String get confirmDepositContent =>
+      'Bu tutarı bankaya yatırmak istediğinize emin misiniz? Bu işlem kasadan düşülecektir.';
+
+  @override
+  String get backupRestore => 'Yedekleme ve Geri Yükleme';
+
+  @override
+  String get backupData => 'Verileri Yedekle';
+
+  @override
+  String get restoreData => 'Verileri Geri Yükle';
+
+  @override
+  String get tutorialWelcomeTitle => 'Hoş Geldiniz!';
+
+  @override
+  String get tutorialWelcomeDesc =>
+      'KASA+ ile para saymak artık çok kolay. Hızlı bir tura ne dersiniz?';
+
+  @override
+  String get tutorialTotalTitle => 'Toplam Tutar';
+
+  @override
+  String get tutorialTotalDesc =>
+      'Saydığınız paraların toplamını burada görebilirsiniz.';
+
+  @override
+  String get tutorialInitialTitle => 'Kasa Avansı ve Hedef';
+
+  @override
+  String get tutorialInitialDesc =>
+      'Güne başladığınız parayı (Avans) veya olması gereken tutarı buradan girebilirsiniz.';
+
+  @override
+  String get tutorialListTitle => 'Para Girişi';
+
+  @override
+  String get tutorialListDesc =>
+      'Elinizdeki banknot ve madeni paraların adetlerini buraya girin.';
+
+  @override
+  String get tutorialSaveTitle => 'Kaydet ve Sıfırla';
+
+  @override
+  String get tutorialSaveDesc =>
+      'İşleminizi kaydetmek veya ekranı temizlemek için bu butonları kullanın.';
+
+  @override
+  String get tutorialMenuTitle => 'Menü';
+
+  @override
+  String get tutorialMenuDesc =>
+      'Geçmiş, Kasa Envanteri ve Ayarlara buradan ulaşabilirsiniz.';
+
+  @override
+  String get skip => 'Atla';
+
+  @override
+  String get next => 'İleri';
+
+  @override
+  String get finish => 'Bitir';
 }

@@ -19,28 +19,10 @@ class _SafePageState extends State<SafePage> {
   // Define denominations for supported currencies (same as HomePage)
   static const Map<String, List<double>> _currencyDenominations = {
     'TRY': [200, 100, 50, 20, 10, 5, 1, 0.5, 0.25, 0.1, 0.05],
-    'USD': [100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05, 0.01],
-    'EUR': [
-      500,
-      200,
-      100,
-      50,
-      20,
-      10,
-      5,
-      2,
-      1,
-      0.50,
-      0.20,
-      0.10,
-      0.05,
-      0.02,
-      0.01,
-    ],
   };
 
   List<double> _getDenominations(String currency) {
-    return _currencyDenominations[currency] ?? _currencyDenominations['TRY']!;
+    return _currencyDenominations['TRY']!;
   }
 
   @override
@@ -84,28 +66,15 @@ class _SafePageState extends State<SafePage> {
 
   String _formatDenominationLabel(double denom, String currency) {
     if (denom >= 1) {
-      return '${_getCurrencySymbol(currency)}${denom.toStringAsFixed(0)}';
+      return '₺${denom.toStringAsFixed(0)}';
     } else {
-      if (currency == 'TRY') {
-        final kurus = (denom * 100).round();
-        return '${kurus}Kr';
-      } else {
-        return '${_getCurrencySymbol(currency)}${denom.toStringAsFixed(2)}';
-      }
+      final kurus = (denom * 100).round();
+      return '${kurus}Kr';
     }
   }
 
   String _getCurrencySymbol(String currency) {
-    switch (currency) {
-      case 'USD':
-        return '\$';
-      case 'EUR':
-        return '€';
-      case 'TRY':
-        return '₺';
-      default:
-        return '';
-    }
+    return '₺';
   }
 
   @override

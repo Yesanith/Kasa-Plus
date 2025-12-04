@@ -62,7 +62,8 @@ import 'app_localizations_tr.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -70,7 +71,8 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -82,339 +84,443 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('tr')
+    Locale('tr'),
   ];
 
   /// No description provided for @appTitle.
   ///
-  /// In en, this message translates to:
+  /// In tr, this message translates to:
   /// **'KASA+'**
   String get appTitle;
 
   /// No description provided for @total.
   ///
-  /// In en, this message translates to:
-  /// **'Total'**
+  /// In tr, this message translates to:
+  /// **'Toplam'**
   String get total;
 
   /// No description provided for @add.
   ///
-  /// In en, this message translates to:
-  /// **'Add'**
+  /// In tr, this message translates to:
+  /// **'Ekle'**
   String get add;
 
   /// No description provided for @options.
   ///
-  /// In en, this message translates to:
-  /// **'Options'**
+  /// In tr, this message translates to:
+  /// **'Seçenekler'**
   String get options;
 
   /// No description provided for @currency.
   ///
-  /// In en, this message translates to:
-  /// **'Currency'**
+  /// In tr, this message translates to:
+  /// **'Para Birimi'**
   String get currency;
 
   /// No description provided for @language.
   ///
-  /// In en, this message translates to:
-  /// **'Language'**
+  /// In tr, this message translates to:
+  /// **'Dil'**
   String get language;
 
   /// No description provided for @usd.
   ///
-  /// In en, this message translates to:
+  /// In tr, this message translates to:
   /// **'USD'**
   String get usd;
 
   /// No description provided for @eur.
   ///
-  /// In en, this message translates to:
+  /// In tr, this message translates to:
   /// **'EUR'**
   String get eur;
 
   /// No description provided for @tl.
   ///
-  /// In en, this message translates to:
+  /// In tr, this message translates to:
   /// **'TRY'**
   String get tl;
 
   /// No description provided for @quantity.
   ///
-  /// In en, this message translates to:
-  /// **'Quantity'**
+  /// In tr, this message translates to:
+  /// **'Miktar'**
   String get quantity;
 
   /// No description provided for @reset.
   ///
-  /// In en, this message translates to:
-  /// **'Reset'**
+  /// In tr, this message translates to:
+  /// **'Sıfırla'**
   String get reset;
 
   /// No description provided for @save.
   ///
-  /// In en, this message translates to:
-  /// **'Save'**
+  /// In tr, this message translates to:
+  /// **'Kaydet'**
   String get save;
 
   /// No description provided for @history.
   ///
-  /// In en, this message translates to:
-  /// **'History'**
+  /// In tr, this message translates to:
+  /// **'Geçmiş'**
   String get history;
 
   /// No description provided for @saved.
   ///
-  /// In en, this message translates to:
-  /// **'Saved'**
+  /// In tr, this message translates to:
+  /// **'Kaydedildi'**
   String get saved;
 
   /// No description provided for @noHistory.
   ///
-  /// In en, this message translates to:
-  /// **'No history yet'**
+  /// In tr, this message translates to:
+  /// **'Henüz geçmiş yok'**
   String get noHistory;
 
   /// No description provided for @delete.
   ///
-  /// In en, this message translates to:
-  /// **'Delete'**
+  /// In tr, this message translates to:
+  /// **'Sil'**
   String get delete;
 
   /// No description provided for @clearAll.
   ///
-  /// In en, this message translates to:
-  /// **'Clear All'**
+  /// In tr, this message translates to:
+  /// **'Tümünü Temizle'**
   String get clearAll;
 
   /// No description provided for @confirmDelete.
   ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to delete all history?'**
+  /// In tr, this message translates to:
+  /// **'Tüm geçmişi silmek istediğinize emin misiniz?'**
   String get confirmDelete;
 
   /// No description provided for @cancel.
   ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
+  /// In tr, this message translates to:
+  /// **'İptal'**
   String get cancel;
 
   /// No description provided for @confirm.
   ///
-  /// In en, this message translates to:
-  /// **'Confirm'**
+  /// In tr, this message translates to:
+  /// **'Onayla'**
   String get confirm;
 
   /// No description provided for @initialCash.
   ///
-  /// In en, this message translates to:
-  /// **'Initial Cash'**
+  /// In tr, this message translates to:
+  /// **'Kasa Avansı'**
   String get initialCash;
 
   /// No description provided for @targetAmount.
   ///
-  /// In en, this message translates to:
-  /// **'Target Amount'**
+  /// In tr, this message translates to:
+  /// **'Olması Gereken'**
   String get targetAmount;
 
   /// No description provided for @difference.
   ///
-  /// In en, this message translates to:
-  /// **'Difference'**
+  /// In tr, this message translates to:
+  /// **'Fark'**
   String get difference;
 
   /// No description provided for @netTotal.
   ///
-  /// In en, this message translates to:
-  /// **'Net Total'**
+  /// In tr, this message translates to:
+  /// **'Net Toplam'**
   String get netTotal;
 
   /// No description provided for @english.
   ///
-  /// In en, this message translates to:
-  /// **'English'**
+  /// In tr, this message translates to:
+  /// **'İngilizce'**
   String get english;
 
   /// No description provided for @turkish.
   ///
-  /// In en, this message translates to:
-  /// **'Turkish'**
+  /// In tr, this message translates to:
+  /// **'Türkçe'**
   String get turkish;
 
   /// No description provided for @safe.
   ///
-  /// In en, this message translates to:
-  /// **'Safe'**
+  /// In tr, this message translates to:
+  /// **'Kasa'**
   String get safe;
 
   /// No description provided for @addToSafe.
   ///
-  /// In en, this message translates to:
-  /// **'Add to Safe?'**
+  /// In tr, this message translates to:
+  /// **'Kasaya Ekle?'**
   String get addToSafe;
 
   /// No description provided for @addToSafeContent.
   ///
-  /// In en, this message translates to:
-  /// **'Do you want to add these items to the safe inventory?'**
+  /// In tr, this message translates to:
+  /// **'Bu sayımı kasaya eklemek ister misiniz?'**
   String get addToSafeContent;
 
   /// No description provided for @addedToSafe.
   ///
-  /// In en, this message translates to:
-  /// **'Added to Safe'**
+  /// In tr, this message translates to:
+  /// **'Kasaya Eklendi'**
   String get addedToSafe;
 
   /// No description provided for @resetSafe.
   ///
-  /// In en, this message translates to:
-  /// **'Reset Safe'**
+  /// In tr, this message translates to:
+  /// **'Kasayı Sıfırla'**
   String get resetSafe;
 
   /// No description provided for @confirmResetSafe.
   ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to reset the safe for this currency?'**
+  /// In tr, this message translates to:
+  /// **'Bu para birimi için kasayı sıfırlamak istediğinize emin misiniz?'**
   String get confirmResetSafe;
 
   /// No description provided for @safeDropTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Safe Drop Calculation'**
+  /// In tr, this message translates to:
+  /// **'Kasa Devir Hesabı'**
   String get safeDropTitle;
 
   /// No description provided for @totalCounted.
   ///
-  /// In en, this message translates to:
-  /// **'Total Counted'**
+  /// In tr, this message translates to:
+  /// **'Sayılan Toplam'**
   String get totalCounted;
 
   /// No description provided for @deductedInitial.
   ///
-  /// In en, this message translates to:
-  /// **'Initial Cash (Kept)'**
+  /// In tr, this message translates to:
+  /// **'Düşülen Avans (Kasada Kalan)'**
   String get deductedInitial;
 
   /// No description provided for @toBeAdded.
   ///
-  /// In en, this message translates to:
-  /// **'To Be Added'**
+  /// In tr, this message translates to:
+  /// **'Kasaya Eklenecek'**
   String get toBeAdded;
 
   /// No description provided for @statistics.
   ///
-  /// In en, this message translates to:
-  /// **'Statistics'**
+  /// In tr, this message translates to:
+  /// **'İstatistikler'**
   String get statistics;
 
   /// No description provided for @lastRecords.
   ///
-  /// In en, this message translates to:
-  /// **'Last {count} Records'**
+  /// In tr, this message translates to:
+  /// **'Son {count} Kayıt'**
   String lastRecords(Object count);
 
   /// No description provided for @netTotalTrend.
   ///
-  /// In en, this message translates to:
-  /// **'Net Total Trend'**
+  /// In tr, this message translates to:
+  /// **'Net Toplam Grafiği'**
   String get netTotalTrend;
 
   /// No description provided for @differenceTrend.
   ///
-  /// In en, this message translates to:
-  /// **'Difference Trend'**
+  /// In tr, this message translates to:
+  /// **'Fark Grafiği'**
   String get differenceTrend;
 
   /// No description provided for @surplus.
   ///
-  /// In en, this message translates to:
-  /// **'Surplus'**
+  /// In tr, this message translates to:
+  /// **'Fazla'**
   String get surplus;
 
   /// No description provided for @deficit.
   ///
-  /// In en, this message translates to:
-  /// **'Deficit'**
+  /// In tr, this message translates to:
+  /// **'Açık'**
   String get deficit;
 
   /// No description provided for @safeEmptyTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Safe Status Unknown'**
+  /// In tr, this message translates to:
+  /// **'Kasa Durumu Belirsiz'**
   String get safeEmptyTitle;
 
   /// No description provided for @safeEmptyMessage.
   ///
-  /// In en, this message translates to:
-  /// **'Your safe appears to be empty. Please enter the current amount in your safe to start.'**
+  /// In tr, this message translates to:
+  /// **'Kasanızda para görünmüyor. Başlamak için lütfen kasadaki mevcut tutarı girin.'**
   String get safeEmptyMessage;
 
   /// No description provided for @later.
   ///
-  /// In en, this message translates to:
-  /// **'Later'**
+  /// In tr, this message translates to:
+  /// **'Daha Sonra'**
   String get later;
 
   /// No description provided for @goToSafe.
   ///
-  /// In en, this message translates to:
-  /// **'Go to Safe'**
+  /// In tr, this message translates to:
+  /// **'Kasaya Git'**
   String get goToSafe;
 
   /// No description provided for @bankDeposit.
   ///
-  /// In en, this message translates to:
-  /// **'Bank Deposit'**
+  /// In tr, this message translates to:
+  /// **'Bankaya Yatırılan'**
   String get bankDeposit;
 
   /// No description provided for @deposit.
   ///
-  /// In en, this message translates to:
-  /// **'Deposit'**
+  /// In tr, this message translates to:
+  /// **'Yatır'**
   String get deposit;
 
   /// No description provided for @deposited.
   ///
-  /// In en, this message translates to:
-  /// **'Deposited'**
+  /// In tr, this message translates to:
+  /// **'Yatırıldı'**
   String get deposited;
-
-  /// No description provided for @cannotDeleteDeposit.
-  ///
-  /// In en, this message translates to:
-  /// **'Bank deposits cannot be deleted'**
-  String get cannotDeleteDeposit;
 
   /// No description provided for @insufficientFunds.
   ///
-  /// In en, this message translates to:
-  /// **'Insufficient funds in safe'**
+  /// In tr, this message translates to:
+  /// **'Kasada yeterli bakiye yok'**
   String get insufficientFunds;
 
   /// No description provided for @confirmDeposit.
   ///
-  /// In en, this message translates to:
-  /// **'Confirm Deposit'**
+  /// In tr, this message translates to:
+  /// **'Yatırmayı Onayla'**
   String get confirmDeposit;
 
   /// No description provided for @confirmDepositContent.
   ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to deposit this amount to the bank? This will be deducted from the safe.'**
+  /// In tr, this message translates to:
+  /// **'Bu tutarı bankaya yatırmak istediğinize emin misiniz? Bu işlem kasadan düşülecektir.'**
   String get confirmDepositContent;
+
+  /// No description provided for @backupRestore.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yedekleme ve Geri Yükleme'**
+  String get backupRestore;
+
+  /// No description provided for @backupData.
+  ///
+  /// In tr, this message translates to:
+  /// **'Verileri Yedekle'**
+  String get backupData;
+
+  /// No description provided for @restoreData.
+  ///
+  /// In tr, this message translates to:
+  /// **'Verileri Geri Yükle'**
+  String get restoreData;
+
+  /// No description provided for @tutorialWelcomeTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hoş Geldiniz!'**
+  String get tutorialWelcomeTitle;
+
+  /// No description provided for @tutorialWelcomeDesc.
+  ///
+  /// In tr, this message translates to:
+  /// **'KASA+ ile para saymak artık çok kolay. Hızlı bir tura ne dersiniz?'**
+  String get tutorialWelcomeDesc;
+
+  /// No description provided for @tutorialTotalTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Toplam Tutar'**
+  String get tutorialTotalTitle;
+
+  /// No description provided for @tutorialTotalDesc.
+  ///
+  /// In tr, this message translates to:
+  /// **'Saydığınız paraların toplamını burada görebilirsiniz.'**
+  String get tutorialTotalDesc;
+
+  /// No description provided for @tutorialInitialTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kasa Avansı ve Hedef'**
+  String get tutorialInitialTitle;
+
+  /// No description provided for @tutorialInitialDesc.
+  ///
+  /// In tr, this message translates to:
+  /// **'Güne başladığınız parayı (Avans) veya olması gereken tutarı buradan girebilirsiniz.'**
+  String get tutorialInitialDesc;
+
+  /// No description provided for @tutorialListTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Para Girişi'**
+  String get tutorialListTitle;
+
+  /// No description provided for @tutorialListDesc.
+  ///
+  /// In tr, this message translates to:
+  /// **'Elinizdeki banknot ve madeni paraların adetlerini buraya girin.'**
+  String get tutorialListDesc;
+
+  /// No description provided for @tutorialSaveTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kaydet ve Sıfırla'**
+  String get tutorialSaveTitle;
+
+  /// No description provided for @tutorialSaveDesc.
+  ///
+  /// In tr, this message translates to:
+  /// **'İşleminizi kaydetmek veya ekranı temizlemek için bu butonları kullanın.'**
+  String get tutorialSaveDesc;
+
+  /// No description provided for @tutorialMenuTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Menü'**
+  String get tutorialMenuTitle;
+
+  /// No description provided for @tutorialMenuDesc.
+  ///
+  /// In tr, this message translates to:
+  /// **'Geçmiş, Kasa Envanteri ve Ayarlara buradan ulaşabilirsiniz.'**
+  String get tutorialMenuDesc;
+
+  /// No description provided for @skip.
+  ///
+  /// In tr, this message translates to:
+  /// **'Atla'**
+  String get skip;
+
+  /// No description provided for @next.
+  ///
+  /// In tr, this message translates to:
+  /// **'İleri'**
+  String get next;
+
+  /// No description provided for @finish.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bitir'**
+  String get finish;
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -423,25 +529,26 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['en', 'tr'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['en', 'tr'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en': return AppLocalizationsEn();
-    case 'tr': return AppLocalizationsTr();
+    case 'en':
+      return AppLocalizationsEn();
+    case 'tr':
+      return AppLocalizationsTr();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
+    'that was used.',
   );
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:money_calc_app/providers/settings_provider.dart';
 import 'package:money_calc_app/providers/safe_provider.dart';

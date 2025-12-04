@@ -8,30 +8,24 @@ import 'package:money_calc_app/pages/home_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  // Detect device locale and pass it to the settings provider
-  final platformLocale = WidgetsBinding.instance.platformDispatcher.locale;
-  runApp(MainApp(initialLocale: platformLocale));
+  runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key, this.initialLocale});
-
-  final Locale? initialLocale;
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => SettingsProvider(initialLocale: initialLocale),
-        ),
+        ChangeNotifierProvider(create: (context) => SettingsProvider()),
         ChangeNotifierProvider(create: (context) => HistoryProvider()),
         ChangeNotifierProvider(create: (context) => SafeProvider()),
       ],
       child: Consumer<SettingsProvider>(
         builder: (context, settings, child) {
           return MaterialApp(
-            title: 'Money Counter',
+            title: 'Kasa+',
             darkTheme: ThemeData(
               useMaterial3: true,
               fontFamily: 'Roboto',

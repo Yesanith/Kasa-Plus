@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:money_calc_app/providers/settings_provider.dart';
 import 'package:money_calc_app/providers/history_provider.dart';
 import 'package:money_calc_app/providers/safe_provider.dart';
@@ -23,6 +24,13 @@ class _HomePageState extends State<HomePage> {
   double _initialCash = 0.0;
   double _targetAmount = 0.0;
 
+  // Tutorial Keys
+  final GlobalKey _totalDisplayKey = GlobalKey();
+  final GlobalKey _reconciliationKey = GlobalKey();
+  final GlobalKey _listKey = GlobalKey();
+  final GlobalKey _saveKey = GlobalKey();
+  final GlobalKey _menuKey = GlobalKey();
+
   // Store controllers for each denomination to persist input
   final Map<double, TextEditingController> _controllers = {};
   // Store initial cash counts
@@ -35,28 +43,185 @@ class _HomePageState extends State<HomePage> {
   // Define denominations for supported currencies
   static const Map<String, List<double>> _currencyDenominations = {
     'TRY': [200, 100, 50, 20, 10, 5, 1, 0.5, 0.25, 0.1, 0.05],
-    'USD': [100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05, 0.01],
-    'EUR': [
-      500,
-      200,
-      100,
-      50,
-      20,
-      10,
-      5,
-      2,
-      1,
-      0.50,
-      0.20,
-      0.10,
-      0.05,
-      0.02,
-      0.01,
-    ],
   };
 
   List<double> _getDenominations(String currency) {
-    return _currencyDenominations[currency] ?? _currencyDenominations['TRY']!;
+    return _currencyDenominations['TRY']!;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkTutorial();
+    });
+  }
+
+  void _checkTutorial() {
+    final settings = Provider.of<SettingsProvider>(context, listen: false);
+    if (!settings.tutorialShown) {
+      _showTutorial(context);
+    }
+  }
+
+  void _showTutorial(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final settings = Provider.of<SettingsProvider>(context, listen: false);
+
+    TutorialCoachMark(
+      targets: [
+        TargetFocus(
+          identify: 'welcome',
+          keyTarget: _totalDisplayKey, // Start with total display as anchor
+          contents: [
+            TargetContent(
+              builder: (context, controller) {
+                return _buildTutorialContent(
+                  title: localizations.tutorialWelcomeTitle,
+                  description: localizations.tutorialWelcomeDesc,
+                  controller: controller,
+                  localizations: localizations,
+                );
+              },
+            ),
+          ],
+        ),
+        TargetFocus(
+          identify: 'total',
+          keyTarget: _totalDisplayKey,
+          contents: [
+            TargetContent(
+              builder: (context, controller) {
+                return _buildTutorialContent(
+                  title: localizations.tutorialTotalTitle,
+                  description: localizations.tutorialTotalDesc,
+                  controller: controller,
+                  localizations: localizations,
+                );
+              },
+            ),
+          ],
+        ),
+        TargetFocus(
+          identify: 'initial',
+          keyTarget: _reconciliationKey,
+          contents: [
+            TargetContent(
+              builder: (context, controller) {
+                return _buildTutorialContent(
+                  title: localizations.tutorialInitialTitle,
+                  description: localizations.tutorialInitialDesc,
+                  controller: controller,
+                  localizations: localizations,
+                );
+              },
+            ),
+          ],
+        ),
+        TargetFocus(
+          identify: 'list',
+          keyTarget: _listKey,
+          shape: ShapeLightFocus.RRect,
+          contents: [
+            TargetContent(
+              align: ContentAlign.top,
+              builder: (context, controller) {
+                return _buildTutorialContent(
+                  title: localizations.tutorialListTitle,
+                  description: localizations.tutorialListDesc,
+                  controller: controller,
+                  localizations: localizations,
+                );
+              },
+            ),
+          ],
+        ),
+        TargetFocus(
+          identify: 'save',
+          keyTarget: _saveKey,
+          contents: [
+            TargetContent(
+              align: ContentAlign.top,
+              builder: (context, controller) {
+                return _buildTutorialContent(
+                  title: localizations.tutorialSaveTitle,
+                  description: localizations.tutorialSaveDesc,
+                  controller: controller,
+                  localizations: localizations,
+                );
+              },
+            ),
+          ],
+        ),
+        TargetFocus(
+          identify: 'menu',
+          keyTarget: _menuKey,
+          contents: [
+            TargetContent(
+              builder: (context, controller) {
+                return _buildTutorialContent(
+                  title: localizations.tutorialMenuTitle,
+                  description: localizations.tutorialMenuDesc,
+                  controller: controller,
+                  localizations: localizations,
+                  isLast: true,
+                );
+              },
+            ),
+          ],
+        ),
+      ],
+      textSkip: localizations.skip,
+      onFinish: () {
+        settings.completeTutorial();
+      },
+      onSkip: () {
+        settings.completeTutorial();
+        return true;
+      },
+    ).show(context: context);
+  }
+
+  Widget _buildTutorialContent({
+    required String title,
+    required String description,
+    required TutorialCoachMarkController controller,
+    required AppLocalizations localizations,
+    bool isLast = false,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+              fontSize: 18.0,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(description, style: const TextStyle(color: Colors.black87)),
+          const SizedBox(height: 16),
+          Align(
+            alignment: Alignment.centerRight,
+            child: FilledButton(
+              onPressed: () {
+                controller.next();
+              },
+              child: Text(isLast ? localizations.finish : localizations.next),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -99,23 +264,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   String _formatCurrency(double value, String currency, Locale locale) {
-    String symbol;
-    switch (currency) {
-      case 'USD':
-        symbol = '\$';
-        break;
-      case 'EUR':
-        symbol = '€';
-        break;
-      case 'TRY':
-        symbol = '₺';
-        break;
-      default:
-        symbol = '';
-    }
     final format = NumberFormat.currency(
       locale: locale.languageCode,
-      symbol: symbol,
+      symbol: '₺',
     );
     return format.format(value);
   }
@@ -328,7 +479,17 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(localizations.appTitle),
-        // Removed actions, now using Drawer
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              key: _menuKey,
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
       ),
       drawer: const AppDrawer(),
       body: Column(
@@ -350,6 +511,7 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 TotalDisplay(
+                  key: _totalDisplayKey,
                   total: _total,
                   initialCash: _initialCash,
                   targetAmount: _targetAmount,
@@ -358,6 +520,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 16),
                 ReconciliationSection(
+                  key: _reconciliationKey,
                   initialCashController: _initialCashController,
                   targetAmountController: _targetAmountController,
                   onInitialCashTap: _showInitialCashDialog,
@@ -365,74 +528,25 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  key: _saveKey,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // Currency Selector
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: Theme.of(context).dividerColor,
-                        ),
-                      ),
-                      child: DropdownButton<String>(
-                        value: settings.currency,
-                        underline: Container(),
-                        icon: Icon(
-                          Icons.keyboard_arrow_down_rounded,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        items: ['USD', 'EUR', 'TRY'].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value == 'USD'
-                                  ? localizations.usd
-                                  : value == 'EUR'
-                                  ? localizations.eur
-                                  : localizations.tl,
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          if (newValue != null) {
-                            settings.setCurrency(newValue);
-                          }
-                        },
+                    // Save Button
+                    FilledButton.icon(
+                      onPressed: _saveRecord,
+                      icon: const Icon(Icons.save_rounded, size: 18),
+                      label: Text(localizations.save),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Colors.white,
                       ),
                     ),
-                    Row(
-                      children: [
-                        // Save Button
-                        FilledButton.icon(
-                          onPressed: _saveRecord,
-                          icon: const Icon(Icons.save_rounded, size: 18),
-                          label: Text(localizations.save),
-                          style: FilledButton.styleFrom(
-                            backgroundColor: Theme.of(
-                              context,
-                            ).colorScheme.primary,
-                            foregroundColor: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        // Reset Button
-                        IconButton.filledTonal(
-                          onPressed: _resetTotal,
-                          icon: const Icon(Icons.refresh_rounded),
-                          tooltip: localizations.reset,
-                        ),
-                      ],
+                    const SizedBox(width: 8),
+                    // Reset Button
+                    IconButton.filledTonal(
+                      onPressed: _resetTotal,
+                      icon: const Icon(Icons.refresh_rounded),
+                      tooltip: localizations.reset,
                     ),
                   ],
                 ),
@@ -443,6 +557,7 @@ class _HomePageState extends State<HomePage> {
           // Scrollable list of denominations
           Expanded(
             child: DenominationList(
+              key: _listKey,
               denominations: denominations,
               controllers: _controllers,
               currency: settings.currency,

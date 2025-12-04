@@ -1,74 +1,82 @@
 # KASA+ 💰
 
-**KASA+** is a modern, efficient, and user-friendly money counting and safe management application designed for Android. It simplifies the process of counting cash, tracking safe inventory, and managing daily reconciliations for businesses and individuals.
+**KASA+**, işletmeler ve bireyler için tasarlanmış modern, hızlı ve kullanıcı dostu bir para sayma ve kasa takip uygulamasıdır. Günlük kasa sayımlarınızı, banka yatırma işlemlerinizi ve kasa envanterinizi kolayca yönetmenizi sağlar.
 
-## ✨ Features
+> **Not:** Bu uygulama şu anda sadece **Türk Lirası (TRY)** ve **Türkçe** dil desteği sunmaktadır.
 
-*   **💵 Multi-Currency Support:** Seamlessly switch between Turkish Lira (TRY), US Dollar (USD), and Euro (EUR).
-*   **🧮 Smart Money Counting:** Quickly count cash using an intuitive denomination-based interface.
-*   **🏦 Safe Management:** Automatically track your safe's inventory ("Kasa"). Counts are added to the safe, and bank deposits are deducted.
-*   **📉 Reconciliation:** Easily calculate differences between your counted cash, initial cash (avans), and target amounts.
-*   **📜 History Tracking:** Keep a detailed record of all your counts and bank deposits.
-*   **🏦 Bank Deposits:** Record money deposited into the bank, which is automatically deducted from your safe balance.
-*   **📊 Statistics:** Visualize your financial trends with net total and difference charts.
-*   **🌙 Dark Mode:** A sleek, eye-friendly dark theme with emerald accents.
-*   **🌍 Localization:** Fully localized in English and Turkish.
+## ✨ Özellikler
 
-## 📱 Screenshots
+*   **🧮 Akıllı Para Sayma:** Banknot ve madeni paralar için özel hazırlanmış arayüz ile hızlıca sayım yapın.
+*   **🏦 Kasa Yönetimi:** Kasanızdaki parayı otomatik olarak takip edin. Sayımlar kasaya eklenir, banka yatırma işlemleri kasadan düşülür.
+*   **📉 Mutabakat:** Sayılan tutar, kasa avansı ve olması gereken tutar arasındaki farkları anında görün.
+*   **📜 Geçmiş Kayıtları:** Tüm sayım ve işlem geçmişinizi detaylı bir şekilde saklayın ve dilediğiniz zaman inceleyin.
+*   **🏦 Banka Yatırma:** Bankaya yatırılan tutarları kaydedin ve kasanızdan otomatik olarak düşülmesini sağlayın.
+*   **📊 İstatistikler:** Net toplam ve fark grafiklerinizi görsel olarak analiz edin.
+*   **💾 Yedekleme ve Geri Yükleme:** Verilerinizi kaybetmemek için yedekleyin ve dilediğiniz zaman geri yükleyin.
+*   **🌙 Karanlık Mod:** Göz yormayan şık karanlık tema.
 
-| Home Screen | Safe Inventory | History |
-|:---:|:---:|:---:|
-| *(Add screenshot here)* | *(Add screenshot here)* | *(Add screenshot here)* |
+## 🚀 Kurulum
 
-## 🚀 Getting Started
+Bu proje Flutter ile geliştirilmiştir. Çalıştırmak için bilgisayarınızda Flutter SDK kurulu olmalıdır.
 
-### Prerequisites
-
-*   [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your machine.
-*   An Android device or emulator.
-
-### Installation
-
-1.  **Clone the repository:**
+1.  **Projeyi indirin:**
     ```bash
-    git clone https://github.com/yourusername/kasa-plus.git
+    git clone https://github.com/kullaniciadiniz/kasa-plus.git
     cd kasa-plus
     ```
 
-2.  **Install dependencies:**
+2.  **Gerekli paketleri yükleyin:**
     ```bash
     flutter pub get
     ```
 
-3.  **Run the app:**
+3.  **Uygulamayı çalıştırın:**
     ```bash
     flutter run
     ```
 
-## 🛠️ Built With
+## 📖 Kullanım Kılavuzu
 
-*   **[Flutter](https://flutter.dev/)** - UI Toolkit
-*   **[Provider](https://pub.dev/packages/provider)** - State Management
-*   **[Shared Preferences](https://pub.dev/packages/shared_preferences)** - Local Data Persistence
-*   **[FL Chart](https://pub.dev/packages/fl_chart)** - Charts and Graphs
-*   **[Intl](https://pub.dev/packages/intl)** - Internationalization
+### 0. İlk Başlangıç (Uygulamayı İlk Açış)
+Uygulamayı ilk kez çalıştırdığınızda kasanız boş olarak gelir.
+1.  **Başlangıç Bakiyesi:** Eğer kasanızda devreden bir bakiye varsa, sol menüden **Kasa** sayfasına giderek elinizdeki banknot ve madeni paraları ilgili kutucuklara girebilirsiniz. Bu işlem kasanızın açılış bakiyesini oluşturur.
+2.  **Günlük Kullanım:** Artık **Ana Sayfa** üzerinden günlük sayımlarınızı yapmaya başlayabilirsiniz.
 
-## 📂 Project Structure
+### 1. Ana Sayfa (Para Sayma)
+Uygulamanın açılış ekranıdır. Günlük sayımlarınızı buradan yaparsınız.
+*   **Adet Girme:** Her bir banknot veya madeni para biriminin yanındaki kutucuğa elinizdeki adedi girin.
+*   **Kasa Avansı:** Eğer güne belirli bir miktar bozuk para veya nakit ile başladıysanız, "Kasa Avansı" bölümüne girin.
+*   **Olması Gereken:** Z raporunuzdaki veya sisteminizdeki olması gereken tutarı girerek farkı (açık/fazla) görebilirsiniz.
+*   **Kaydet:** İşlemi bitirdiğinizde sağ alttaki "Kaydet" butonuna basın. Bu işlem kaydı geçmişe ekler ve tutarı kasaya aktarmak isteyip istemediğinizi sorar.
 
-```
-lib/
-├── l10n/              # Localization files (ARB)
-├── pages/             # Application screens (Home, Safe, History, etc.)
-├── providers/         # State management logic
-├── widgets/           # Reusable UI components
-└── main.dart          # Entry point
-```
+### 2. Kasa (Envanter)
+Sol menüden "Kasa" sayfasına ulaşabilirsiniz.
+*   Burada kasanızda o an fiziksel olarak bulunması gereken toplam nakit miktarını, kupür detaylarıyla birlikte görebilirsiniz.
+*   **Sıfırla:** Sağ üstteki yenileme ikonuna basarak kasayı tamamen sıfırlayabilirsiniz (Örn: Gün sonu devir işlemlerinde).
 
-## 🤝 Contributing
+### 3. Geçmiş
+Yapılan tüm sayım ve banka yatırma işlemleri burada listelenir.
+*   Kayıtları silmek için ilgili kaydı sola kaydırmanız yeterlidir.
+*   Tüm geçmişi temizlemek için sağ üstteki çöp kutusu ikonunu kullanabilirsiniz.
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+### 4. Bankaya Yatırma
+Sol menüden "Bankaya Yatır" seçeneği ile kasadan bankaya para çıkışı yapabilirsiniz.
+*   Yatırılan tutar, mevcut kasa bakiyesinden otomatik olarak düşülür.
 
-## 📄 License
+### 5. Yedekleme ve Geri Yükleme
+Verilerinizi güvende tutmak veya başka bir cihaza taşımak için:
+1.  Sol menüden **Seçenekler** sayfasına gidin.
+2.  **Verileri Yedekle** butonuna basın ve oluşturulan dosyayı (Google Drive, E-posta vb. ile) saklayın.
+3.  Verileri geri getirmek için **Verileri Geri Yükle** butonuna basın ve daha önce aldığınız yedek dosyasını seçin.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 🛠️ Kullanılan Teknolojiler
+
+*   **[Flutter](https://flutter.dev/)** - UI Framework
+*   **[Provider](https://pub.dev/packages/provider)** - Durum Yönetimi (State Management)
+*   **[Shared Preferences](https://pub.dev/packages/shared_preferences)** - Veri Saklama
+*   **[FL Chart](https://pub.dev/packages/fl_chart)** - Grafikler
+
+## 📄 Lisans
+
+Bu proje MIT Lisansı ile lisanslanmıştır.
 

@@ -70,18 +70,6 @@ class HistoryPage extends StatelessWidget {
                 return Dismissible(
                   key: Key(record.id),
                   direction: DismissDirection.endToStart,
-                  confirmDismiss: (direction) async {
-                    if (isDeposit) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(localizations.cannotDeleteDeposit),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                      return false;
-                    }
-                    return true;
-                  },
                   background: Container(
                     margin: const EdgeInsets.symmetric(
                       horizontal: 16,

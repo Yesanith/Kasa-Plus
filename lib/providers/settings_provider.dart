@@ -2,44 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsProvider with ChangeNotifier {
-  String _currency = 'USD';
-  Locale _locale = const Locale('en');
+  String _currency = 'TRY';
+  Locale _locale = const Locale('tr');
+  bool _tutorialShown = false;
 
-  /// Optionally provide an initial locale (for device language detection).
-  SettingsProvider({Locale? initialLocale}) {
-    if (initialLocale != null) {
-      // Support only english and turkish for now; fall back to English.
-      final code = initialLocale.languageCode.toLowerCase();
-      if (code == 'tr') {
-        _locale = const Locale('tr');
-      } else {
-        _locale = const Locale('en');
-      }
-    }
+  SettingsProvider() {
+    // Force Turkish locale
+    _locale = const Locale('tr');
     _loadSettings();
   }
 
   String get currency => _currency;
   Locale get locale => _locale;
+  bool get tutorialShown => _tutorialShown;
 
   Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
-    final savedCurrency = prefs.getString('currency');
-    if (savedCurrency != null) {
-      _currency = savedCurrency;
-      notifyListeners();
-    }
+    _tutorialShown = prefs.getBool('tutorial_shown') ?? false;
+
+    // We only support TRY now, so we don't need to load currency from prefs
+    // unless we want to support future currencies.
+    // For now, force TRY.
+    _currency = 'TRY';
+    notifyListeners();
   }
 
-  Future<void> setCurrency(String currency) async {
-    _currency = currency;
+  Future<void> completeTutorial() async {
+    _tutorialShown = true;
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('currency', currency);
+    await prefs.setBool('tutorial_shown', true);
   }
 
+  // Currency is fixed to TRY
+  Future<void> setCurrency(String currency) async {
+    // No-op or throw error
+  }
+
+  // Locale is fixed to TR
   void setLocale(Locale locale) {
-    _locale = locale;
-    notifyListeners();
+    // No-op
   }
 }

@@ -117,4 +117,8 @@ class SafeProvider with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('safe_inventory', json.encode(_inventory));
   }
+
+  Future<void> reload() async {
+    await _loadInventory();
+  }
 }

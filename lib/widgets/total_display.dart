@@ -19,23 +19,9 @@ class TotalDisplay extends StatelessWidget {
   });
 
   String _formatCurrency(double value) {
-    String symbol;
-    switch (currency) {
-      case 'USD':
-        symbol = '\$';
-        break;
-      case 'EUR':
-        symbol = '€';
-        break;
-      case 'TRY':
-        symbol = '₺';
-        break;
-      default:
-        symbol = '';
-    }
     final format = NumberFormat.currency(
       locale: locale.languageCode,
-      symbol: symbol,
+      symbol: '₺',
     );
     return format.format(value);
   }

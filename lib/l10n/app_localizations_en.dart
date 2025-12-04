@@ -93,7 +93,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addToSafe => 'Add to Safe?';
 
   @override
-  String get addToSafeContent => 'Do you want to add these items to the safe inventory?';
+  String get addToSafeContent =>
+      'Do you want to add these items to the safe inventory?';
 
   @override
   String get addedToSafe => 'Added to Safe';
@@ -102,7 +103,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetSafe => 'Reset Safe';
 
   @override
-  String get confirmResetSafe => 'Are you sure you want to reset the safe for this currency?';
+  String get confirmResetSafe =>
+      'Are you sure you want to reset the safe for this currency?';
 
   @override
   String get safeDropTitle => 'Safe Drop Calculation';
@@ -140,7 +142,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get safeEmptyTitle => 'Safe Status Unknown';
 
   @override
-  String get safeEmptyMessage => 'Your safe appears to be empty. Please enter the current amount in your safe to start.';
+  String get safeEmptyMessage =>
+      'Your safe appears to be empty. Please enter the current amount in your safe to start.';
 
   @override
   String get later => 'Later';
@@ -158,14 +161,72 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deposited => 'Deposited';
 
   @override
-  String get cannotDeleteDeposit => 'Bank deposits cannot be deleted';
-
-  @override
   String get insufficientFunds => 'Insufficient funds in safe';
 
   @override
   String get confirmDeposit => 'Confirm Deposit';
 
   @override
-  String get confirmDepositContent => 'Are you sure you want to deposit this amount to the bank? This will be deducted from the safe.';
+  String get confirmDepositContent =>
+      'Are you sure you want to deposit this amount to the bank? This will be deducted from the safe.';
+
+  @override
+  String get backupRestore => 'Backup & Restore';
+
+  @override
+  String get backupData => 'Backup Data';
+
+  @override
+  String get restoreData => 'Restore Data';
+
+  @override
+  String get tutorialWelcomeTitle => 'Welcome to KASA+!';
+
+  @override
+  String get tutorialWelcomeDesc =>
+      'Let\'s take a quick tour to learn how to use the app.';
+
+  @override
+  String get tutorialTotalTitle => 'Total Amount';
+
+  @override
+  String get tutorialTotalDesc =>
+      'Here you can see the total calculated amount.';
+
+  @override
+  String get tutorialInitialTitle => 'Reconciliation';
+
+  @override
+  String get tutorialInitialDesc =>
+      'Enter your initial cash and target amount here to calculate the difference.';
+
+  @override
+  String get tutorialListTitle => 'Denominations';
+
+  @override
+  String get tutorialListDesc =>
+      'Enter the quantity for each denomination here.';
+
+  @override
+  String get tutorialSaveTitle => 'Save & Actions';
+
+  @override
+  String get tutorialSaveDesc =>
+      'Use this button to save your count, add to safe, or reset.';
+
+  @override
+  String get tutorialMenuTitle => 'Menu';
+
+  @override
+  String get tutorialMenuDesc =>
+      'Access History, Safe, Statistics, and Options here.';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get finish => 'Finish';
 }
