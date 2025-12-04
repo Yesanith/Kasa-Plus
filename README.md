@@ -17,7 +17,10 @@
 
 ## 🚀 Kurulum
 
-Bu proje Flutter ile geliştirilmiştir. Çalıştırmak için bilgisayarınızda Flutter SDK kurulu olmalıdır.
+Kurulum dosyasını buradan indirip Android cihazınıza yükleyebilirsiniz:
+👉 [**KasaPlusBeta.apk İndir**](https://github.com/Yesanith/Kasa-Plus/releases/download/Beta/KasaPlusBeta.apk)
+
+Alternatif olarak, kaynak koddan derlemek isterseniz:
 
 1.  **Projeyi indirin:**
     ```bash
