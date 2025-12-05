@@ -21,24 +21,6 @@
 Kurulum dosyasını buradan indirip Android cihazınıza yükleyebilirsiniz:
 👉 [**KasaPlusBeta.apk İndir**](https://github.com/Yesanith/Kasa-Plus/releases/download/Beta/KasaPlusBeta.apk)
 
-Alternatif olarak, kaynak koddan derlemek isterseniz:
-
-1.  **Projeyi indirin:**
-    ```bash
-    git clone https://github.com/kullaniciadiniz/kasa-plus.git
-    cd kasa-plus
-    ```
-
-2.  **Gerekli paketleri yükleyin:**
-    ```bash
-    flutter pub get
-    ```
-
-3.  **Uygulamayı çalıştırın:**
-    ```bash
-    flutter run
-    ```
-
 ## 📖 Kullanım Kılavuzu
 
 ### 0. İlk Başlangıç (Uygulamayı İlk Açış)
